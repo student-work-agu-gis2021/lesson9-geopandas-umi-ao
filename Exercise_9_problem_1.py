@@ -71,7 +71,7 @@ print(len(geo))
 geo.plot()
 plt.show()
 # What can you see on the map? :) 
-
+## Looks like Finland!
 # - save the GeoDataFrame into a Shapefile called `'polygon.shp'`. 
 
 # Save the GeoDataFrame into a new Shapefile called 'polygon.shp'.
