@@ -9,12 +9,14 @@
 # YOUR CODE HERE 1 to read data
 import geopandas as gpd
 from pyproj import CRS
+# read a deta 
 data = gpd.read_file('Kruger_posts.shp')
 
 # - Check the crs of the input data. If this information is missing, set it as epsg:4326 (WGS84).
 # - Reproject the data from WGS84 to `EPSG:32735` -projection which stands for UTM Zone 35S (UTM zone for South Africa) to transform the data into metric system. (don't create a new variable, update the existing variable `data`!)"
 
 # YOUR CODE HERE 2 to set crs
+#Coordinate system transformation
 data = data.to_crs(epsg=32735)
 # CODE FOR TESTING YOUR SOLUTION
 
@@ -30,6 +32,7 @@ print(data.crs)
 #  - Group the data by userid
 
 #  YOUR CODE HERE 3 to group 
+#grouping data by "userid"
 grouped=data.groupby('userid')
 
 # CODE FOR TESTING YOUR SOLUTION
@@ -42,6 +45,7 @@ assert len(grouped.groups) == data["userid"].nunique(), "Number of groups should
 # 
 
 # YOUR CODE HERE 4 to set movements
+#Create a moving line by classifying by id
 import pandas as pd
 from shapely.geometry import LineString, Point
 movements = gpd.GeoDataFrame(columns=['userid','geometry'])
@@ -70,11 +74,17 @@ print(movements["geometry"].head())
 # - Calculate the lenghts of the lines into a new column called ``distance`` in ``movements`` GeoDataFrame.
 
 # YOUR CODE HERE 5 to calculate distance
+##Calculation of distance
 def cal_distance(x):
+    """Calculation of distance"""
+    #input GeoDataFrame
+    #return distance
+
     if x['geometry'] is None:
         return None
     else:
         return x['geometry'].length
+#add the deta of distance
 movements['distance'] = movements.apply(cal_distance, axis=1)
 # CODE FOR TESTING YOUR SOLUTION
 
@@ -90,6 +100,7 @@ movements.head()
 
 # YOUR CODE HERE 6 to find max, min,mean of the distance.
 import statistics as st
+#find max, min,mean of the distance.
 print(st.mean(movements['distance'].dropna())) 
 print(max(movements['distance'].dropna())) 
 print(min(movements['distance']))
@@ -97,6 +108,7 @@ print(min(movements['distance']))
 
 # YOUR CODE HERE 7 to save as Shapefile
 fp = 'some_movements.shp'
+# Save the GeoDataFrame into a new Shapefile called'some_movements.shp'.
 movements.to_file(fp)
 # CODE FOR TESTING YOUR SOLUTION
 
